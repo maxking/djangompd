@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="/m/js/controls.js"></script>
+<script src="/m/js/jquery.knob.js"></script>
+{% endblock %}
+
+{% block topbar %}
+<div id="topbar">
+  <a id="topright" class="rounded menu" href="{% url 'browse' %}">
+    Add Track
+  </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div id="connection">Not Connected</div>
+	<div class="rounded box" style="height:180px;" id="status"></div>
+
+
+    <div class="rounded toggle">Random<input type="checkbox" id="random"></div>
+    <div class="rounded toggle">Repeat<input type="checkbox" id="repeat"></div>
+
+    <div class="rounded slider">
+      Volume:
+      <input id="volume" type="range" min="0" max="100" ></input>
+    </div>
+
+    <a class="rounded menu" href="{% url 'playlist' %}">
+      Playlist
+      <span id="playlist" style="float:right"></span>
+    </a>
+</div>
+
+<div id="bottombar" >
+  <center>
+    <span id="prev" class="controls"></span>
+    <input type="text" value="75" class="dial">
+    <span id="play" class="controls"></span>
+    <span id="pause" class="controls"></span>
+    <span id="next" class="controls"></span>
+  </center>
+</div>
+
+<script>
+    $(function() {
+        $(".dial").knob();
+    });
+</script>
+{% endblock %}

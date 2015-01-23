@@ -1,0 +1,141 @@
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseServerError
+from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+from mpd import MPDClient
+from djangompd.viewtools import as_json, using_mpd
+import json
+# Confiure Logging
+import logging
+logger = logging.getLogger(__name__)
+
+mpd = MPDClient()
+
+try:
+    mpd.connect("localhost", 6600)
+except MPDError:
+    pass
+
+
+@as_json
+@using_mpd
+def status(request):
+    try:
+        data = mpd.status()
+    except MPDError:
+        mpd.connect("localhost", 6600)
+    data.update(mpd.currentsong())
+    data.update(mpd.stats())
+
+    if 'elapsed' not in data:
+        data['elapsed'] = data['time']
+    return data
+
+
+# Playback Controls
+@using_mpd
+def play(request):
+    if mpd.status().get('state', None) == 'play':
+        mpd.pause()
+    else:
+        mpd.play()
+    return HttpResponse("OK")
+
+
+@using_mpd
+def prev(request):
+    mpd.previous()
+    return HttpResponse("OK")
+
+
+@using_mpd
+def next(request):
+    mpd.next()
+    return HttpResponse("OK")
+
+
+@using_mpd
+def stop(request):
+    mpd.stop()
+    return HttpResponse("OK")
+
+
+@using_mpd
+def play_song(request, song_id):
+    logger.debug("Song ID: %s", song_id)
+    mpd.playid(song_id)
+    return HttpResponse("Playing Song %s." % song_id)
+
+
+# General Controls
+@using_mpd
+def repeat(request):
+    repeat = int(mpd.status()['repeat'])
+    mpd.repeat(0 if repeat == 1 else 1)
+
+    return HttpResponse("Repeat: %s" % repeat)
+
+
+@using_mpd
+def random(request):
+    random = int(mpd.status()['random'])
+    mpd.random(0 if random == 1 else 1)
+
+    return HttpResponse("Random: %s" % random)
+
+
+@using_mpd
+def volume(request, volume):
+    mpd.setvol(volume)
+    volume = mpd.status()['volume']
+    return HttpResponse("Volume: %s" % volume)
+
+
+# Playlist Controls
+@csrf_exempt
+@using_mpd
+def add_songs(request):
+    post = request.POST
+    for song in json.loads(post['songs']):
+        mpd.add(song)
+    return HttpResponse("OK")
+
+
+@csrf_exempt
+@using_mpd
+def remove_songs(request):
+    post = request.POST
+
+    for song in json.loads(post['songs']):
+        song = int(song)
+        logger.info("Deleting: %s", song)
+        mpd.deleteid(song)
+    return HttpResponse("OK")
+
+
+@csrf_exempt
+@using_mpd
+def clear_songs(request):
+    mpd.clear()
+    return HttpResponse("OK")
+
+
+@csrf_exempt
+@using_mpd
+def save_playlist(request):
+    name = request.POST['name']
+    logger.debug("Playlist Name: %s", name)
+    try:
+        mpd.rm(name)
+    except:
+        pass
+    mpd.save(name)
+    return HttpResponse("OK")
+
+
+# Misc Commands
+@using_mpd
+def update_library(request):
+    logger.info("Updating library")
+    mpd.update()
+    return HttpResponse("OK")

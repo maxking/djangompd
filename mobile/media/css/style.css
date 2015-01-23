@@ -1,0 +1,35 @@
+#logo {
+		height: 100px;
+		width; auto;
+}
+
+.container {
+		margin-top: 80px;
+}
+
+.controls {
+		display: inline-block;
+		width: 250px;
+		height: 250px;
+		background-image: url(../img/radiocontrols.png);
+		background-repeat: no-repeat;
+}
+
+#play {
+		background-position: -275px 0px;
+}
+#pause{
+		background-position: -275px -275px;
+}
+#next {
+		background-position: -550px 0px;
+}
+#prev {
+		background-position: 0px 0px;
+}
+
+
+#bottombar {
+		position: fixed;
+		bottom: 0px;
+}

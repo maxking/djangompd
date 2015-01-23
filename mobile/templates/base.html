@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<link rel="apple-touch-icon" href="/m/img/apple-touch-icon.png"/>
+		<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+    <title>{% block title %}{% if title %} {{ title }} {% else %} MPD Client {% endif %}{% endblock %}</title>
+
+    <!-- CSS Pages -->
+    <!-- <link rel="stylesheet" href="/m/css/UIElements/UIElements.css" type="text/css" /> -->
+    <!-- <link rel="stylesheet" href="/m/css/site.css" type="text/css" /> -->
+    <!-- <link rel="stylesheet" href="/m/css/topbar.css" type="text/css" /> -->
+    <link rel="stylesheet" href="/m/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/m/css/style.css" type="text/css">
+    <!-- Javascript -->
+    <script src="/m/js/jquery.js"></script>
+    <script src="/m/js/jquery-ui.js"></script>
+    <script src="/m/js/site.js"></script>
+    <script src="/m/js/UIElements.js"></script>
+
+        {% block head %}{% endblock %}
+    </head>
+    <body style="background-color: rgb(241, 242, 246);">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <img alt="Brand" src="m/img/mpd_logo.png" id="logo">
+      </a>
+    </div>
+  </div>
+</nav>
+      <div class="container documents">
+        {% block topbar %}{% endblock %}
+        {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
