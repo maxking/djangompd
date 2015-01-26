@@ -12,7 +12,7 @@ to get the dev server running on your computer
 ```bash
 $ virtualenv mpd
 $ cd mpd
-$ source mpd/bin/activate
+$ source bin/activate
 $ git clone git@github.com:maxking/djangompd.git
 $ cd djangompd
 $ pip install -r requirements.txt
