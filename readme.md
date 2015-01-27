@@ -3,11 +3,11 @@
 This is django based web client for Music Player Daemon(mpd).
 
 ###Prerequisites
-```
-Python 2.7+
-[MPD](http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki)
-[Virtualenv](https://virtualenv.pypa.io/en/latest/index.html)
-```
+
+Python 2.7+  
+[MPD](http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki)  
+[Virtualenv](https://virtualenv.pypa.io/en/latest/index.html)  
+
 ###Setup
 
 This is a standard django project, follow the instructions below
